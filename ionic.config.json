@@ -1,0 +1,7 @@
+{
+  "name": "ion-deal-task-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
