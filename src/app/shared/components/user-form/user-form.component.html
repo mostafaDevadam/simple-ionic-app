@@ -1,0 +1,88 @@
+<div>
+
+
+
+  <form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+
+      <ion-note color="danger" *ngIf="isSubmitted && !isValid">
+        <ng-container>Form Fields is required.</ng-container>
+      </ion-note>
+
+
+      <ion-item>
+        <ion-label>Upload</ion-label>
+        <ion-thumbnail *ngIf="image_url">
+          <img alt="Silhouette of mountains" [src]="image_url" width="450" />
+        </ion-thumbnail>
+
+        <ion-button (click)="openUpload(uploader)" fill="clear">
+          <ion-icon name="cloud-upload" size="large"></ion-icon>
+        </ion-button>
+        <input style="display: none;" type="file" accept="image/*" #uploader [(ngModel)]="files"
+          [ngModelOptions]="{standalone: true}" (change)="uploadImage($event)" />
+
+        <!-- webcam -->
+        <div>
+
+          <!-- mein camera -->
+          <!--<ion-button (click)="init_webCam()">show cam</ion-button>
+          <div ><video #video id="video" width="200" height="200" autoplay [hidden]="!isWebCam"></video></div>
+          <div><ion-button (click)="capture$()">snap*</ion-button></div>
+          <canvas #canvas id="canvas" width="100" height="100" ></canvas>-->
+        </div>
+
+      </ion-item>
+
+      <ion-note color="danger"
+        *ngIf="infoFormControls['image'].invalid && (infoFormControls['image'].dirty || infoFormControls['image'].touched)">
+        <ng-container>Upload Image is required.</ng-container>
+      </ion-note>
+
+
+      <ion-item>
+        <ion-textarea label="Information" rows="5" cols="40" placeholder="Write your information here..."
+          formControlName="info"></ion-textarea>
+      </ion-item>
+
+      <ion-note color="danger"
+        *ngIf="infoFormControls['info'].invalid && (infoFormControls['info'].dirty || infoFormControls['info'].touched)">
+        <ng-container>Information is required.</ng-container>
+        <ng-container>Information must be at least 5 characters long.</ng-container>
+      </ion-note>
+
+      <ion-item>
+        <ion-label>Record:</ion-label>
+        <ion-buttons>
+          <ion-button fill="clear" (click)="playAudio()" *ngIf="audioUrl">Play</ion-button>
+          <ion-button fill="clear" (click)="stopAudio()" *ngIf="audioUrl">Pause</ion-button>
+          <ion-button fill="clear" (click)="openAudioRecording()">Record</ion-button>
+          <!--<ion-button fill="clear" (click)="startRecording()">start</ion-button>
+          <ion-button fill="clear" (click)="stopRecording()">stop</ion-button>
+          <ion-button fill="clear" (click)="playRecording()">play</ion-button>-->
+        </ion-buttons>
+      </ion-item>
+
+      <ion-note color="danger"
+        *ngIf="infoFormControls['audio'].invalid && (infoFormControls['audio'].dirty || infoFormControls['audio'].touched)">
+        <ng-container>Voice Recording is required.</ng-container>
+      </ion-note>
+
+      <ion-note color="danger"
+        *ngIf="infoFormControls['audio'].invalid && (infoFormControls['audio'].dirty || infoFormControls['audio'].touched)">
+        <ng-container>Voice Recording is required.</ng-container>
+      </ion-note>
+
+
+
+
+      <!--<audio controls *ngIf="audioUrl">
+        <source [src]="audioUrl" />
+       </audio>-->
+
+      <ion-button type="submit" expand="block" [disabled]="infoForm.invalid">Submit</ion-button>
+    </ion-list>
+
+  </form>
+
+</div>
