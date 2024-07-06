@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="close()">back</ion-button>
+    </ion-buttons>
+    <ion-title>Camera</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div>
+
+    <!-- mein camera -->
+    <!--<ion-button (click)="init_webCam()">show cam</ion-button>-->
+    <div><video #video id="video" width="200" height="200" autoplay ></video></div>
+    <div><ion-button (click)="capture$()">snap*</ion-button></div>
+    <canvas #canvas id="canvas" width="200" height="200"></canvas>
+  </div>
+
+</ion-content>
