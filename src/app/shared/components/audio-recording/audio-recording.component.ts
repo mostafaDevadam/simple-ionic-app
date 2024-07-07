@@ -26,7 +26,7 @@ export class AudioRecordingComponent implements OnInit {
     private modalCtrl: ModalController,
     private platformService: PlatformService,
     private audioRecordingService: AudioRecorderService,
-    private nativeAudioRecorderService: NativeAudioRecorderService,
+    //private nativeAudioRecorderService: NativeAudioRecorderService,
   ) { }
 
   ngOnInit() {
@@ -47,7 +47,7 @@ export class AudioRecordingComponent implements OnInit {
     if (!this.isNative) {
       this.audioRecordingService.startRecording()
     } else {
-      this.startNativeRecording()
+      //this.startNativeRecording()
     }
 
 
@@ -60,7 +60,7 @@ export class AudioRecordingComponent implements OnInit {
     if (!this.isNative) {
       this.audioRecordingService.stopRecording()
     } else {
-      this.stopNativeRecording()
+     // this.stopNativeRecording()
     }
   }
 
@@ -78,12 +78,13 @@ export class AudioRecordingComponent implements OnInit {
       console.log(`Audio: ${this.audio} , ${this.audioBlob} , ${this.audioUrl}`)
       this.audio.play()
     } else {
-      this.playNativeRecording()
+      //this.playNativeRecording()
     }
 
   }
 
   // native
+  /*
   async startNativeRecording() {
     try {
       const mediaFiles = await this.nativeAudioRecorderService.startRecording()
@@ -105,7 +106,7 @@ export class AudioRecordingComponent implements OnInit {
   playNativeRecording() {
     this.audio = new Audio(this.nativeAudioFile)
     this.audio.play()
-  }
+  }*/
 
 
 
