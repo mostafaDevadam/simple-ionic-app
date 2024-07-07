@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { AudioRecorderService } from '../../services/audio-recorder.service';
+import { PlatformService } from '../../services/platform.service';
+import { NativeAudioRecorderService } from '../../services/native-audio-recorder.service';
+import { MediaFile } from '@awesome-cordova-plugins/media-capture';
 
 @Component({
   selector: 'app-audio-recording',
@@ -14,15 +17,25 @@ export class AudioRecordingComponent implements OnInit {
   audioUrl: any
   audioBlob: any
 
+  isNative: boolean = false
+
+  nativeAudioFile: string = ''
+
 
   constructor(
     private modalCtrl: ModalController,
-    private platform: Platform,
+    private platformService: PlatformService,
     private audioRecordingService: AudioRecorderService,
+    private nativeAudioRecorderService: NativeAudioRecorderService,
   ) { }
 
   ngOnInit() {
     ''
+    if (this.platformService.isWeb()) {
+      this.isNative = false
+    } else if (this.platformService.isMobile()) {
+      this.isNative = true
+    }
   }
 
   close() {
@@ -31,13 +44,24 @@ export class AudioRecordingComponent implements OnInit {
 
   async startRecording() {
     this.isRecording = true
-    this.audioRecordingService.startRecording()
+    if (!this.isNative) {
+      this.audioRecordingService.startRecording()
+    } else {
+      this.startNativeRecording()
+    }
+
 
   }
 
+
+
   async stopRecording() {
     this.isRecording = false
-    this.audioRecordingService.stopRecording()
+    if (!this.isNative) {
+      this.audioRecordingService.stopRecording()
+    } else {
+      this.stopNativeRecording()
+    }
   }
 
   buildAudio() {
@@ -48,11 +72,42 @@ export class AudioRecordingComponent implements OnInit {
   }
 
   playRecording() {
-    this.buildAudio()
-    this.audio = new Audio(this.audioUrl)
-    console.log(`Audio: ${this.audio} , ${this.audioBlob} , ${this.audioUrl}`)
+    if (!this.isNative) {
+      this.buildAudio()
+      this.audio = new Audio(this.audioUrl)
+      console.log(`Audio: ${this.audio} , ${this.audioBlob} , ${this.audioUrl}`)
+      this.audio.play()
+    } else {
+      this.playNativeRecording()
+    }
+
+  }
+
+  // native
+  async startNativeRecording() {
+    try {
+      const mediaFiles = await this.nativeAudioRecorderService.startRecording()
+      if (mediaFiles && mediaFiles.length > 0) {
+        const audioFiles: MediaFile[] = mediaFiles
+        this.nativeAudioFile = audioFiles[0].fullPath
+        console.log('Native Audio recorded:', this.nativeAudioFile)
+      }
+    } catch (error) {
+      throw error
+    }
+
+  }
+
+  async stopNativeRecording() {
+    this.audio.pause()
+  }
+
+  playNativeRecording() {
+    this.audio = new Audio(this.nativeAudioFile)
     this.audio.play()
   }
+
+
 
 
 }
