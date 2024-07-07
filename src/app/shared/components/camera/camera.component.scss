@@ -1,0 +1,22 @@
+ion-footer {
+  ion-buttons {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+
+ion-content {
+  ion-grid {
+    height: 100%;
+    //display: flex;
+    ion-row {
+      height: 100%;
+
+      video {
+        height: 65%;
+      }
+    }
+  }
+}
+

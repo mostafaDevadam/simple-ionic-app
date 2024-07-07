@@ -8,13 +8,27 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div>
 
-    <!-- mein camera -->
-    <!--<ion-button (click)="init_webCam()">show cam</ion-button>-->
-    <div><video #video id="video" width="200" height="200" autoplay ></video></div>
-    <div><ion-button (click)="capture$()">snap*</ion-button></div>
-    <canvas #canvas id="canvas" width="200" height="200"></canvas>
-  </div>
+
+  <!-- mein camera -->
+  <ion-grid>
+    <ion-row>
+      <video #video id="video" autoplay></video>
+    </ion-row>
+    <ion-row>
+            <canvas #canvas id="canvas" width="200" height="200" hidden></canvas>
+        </ion-row>
+  </ion-grid>
+
+
+
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button slot="center" (click)="capture$()">Take Photo</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
