@@ -25,3 +25,14 @@
 #container a {
   text-decoration: none;
 }
+
+ion-header {
+--ion-background-color: #ff3700;
+
+}
+
+ion-content {
+  ion-header {
+    background-color: #8c8c8c;
+  }
+}

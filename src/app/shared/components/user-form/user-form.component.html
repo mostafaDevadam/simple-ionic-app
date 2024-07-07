@@ -56,7 +56,7 @@
         <ion-buttons>
           <ion-button fill="clear" (click)="playAudio()" *ngIf="audioUrl">Play</ion-button>
           <ion-button fill="clear" (click)="stopAudio()" *ngIf="audioUrl">Pause</ion-button>
-          <ion-button fill="clear" (click)="openAudioRecording()">Record</ion-button>
+          <ion-button fill="clear" (click)="openAudioRecording()" class="record-button"> <ion-text>Record</ion-text></ion-button>
           <!--<ion-button fill="clear" (click)="startRecording()">start</ion-button>
           <ion-button fill="clear" (click)="stopRecording()">stop</ion-button>
           <ion-button fill="clear" (click)="playRecording()">play</ion-button>-->
