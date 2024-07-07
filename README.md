@@ -19,21 +19,23 @@
 <ol>2.upload photo from device</ol>
 <ol>3.record voice</ol>
 <ol>4.It works offline and online</ol>
-<ul>
+</ul>
 
 ## Structure
 
 
 ## main component
 UserFormComponent:
-Using UserFormComponent in Home Page because it's reusable component.
-It has the form and fields and validations and created reusable components for camera and voice recording.
+> Using UserFormComponent in Home Page because it's reusable component.
+> It has the form and fields and validations and created reusable components for camera and voice recording.
 
 
 
 ## reusable components
-1.AudioRecoding
-2.Camera
+<ul>
+<ol>1.AudioRecoding</ol>
+<ol>2.Camera</ol>
+</ul>
 
 ## services
 Platform
