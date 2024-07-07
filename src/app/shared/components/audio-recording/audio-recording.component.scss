@@ -1,0 +1,14 @@
+ion-footer {
+  ion-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+}
+
+ion-content {
+  ion-grid {
+    height: 100%;
+    display: flex;
+  }
+}
