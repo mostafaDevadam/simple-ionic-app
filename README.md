@@ -16,9 +16,9 @@
 ## Features
 <ul>
 <ol>1.take photo from camera</ol>
-2.upload photo from device
-3.record voice
-4.It works offline and online
+<ol>2.upload photo from device</ol>
+<ol>3.record voice</ol>
+<ol>4.It works offline and online</ol>
 <ul>
 
 ## Structure
