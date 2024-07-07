@@ -9,6 +9,12 @@ import { CameraComponent } from '../camera/camera.component';
 import { AudioRecordingComponent } from '../audio-recording/audio-recording.component';
 import { NetworkService } from '../../services/network.service';
 import { LocalStorageService } from '../../services/local-storage.service';
+import { NativeNetworkService } from '../../services/native-network.service';
+import { NativeStorageService } from '../../services/native-storage.service';
+import { PreferencesService } from '../../services/preferences.service';
+import { PlatformService } from '../../services/platform.service';
+import { ToastUIService } from '../../services/toast-ui.service';
+import { NativeCameraService } from '../../services/native-camera.service';
 
 @Component({
   selector: 'app-user-form',
@@ -28,6 +34,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   public audio: any
   audioBlob: any
   audioFile = new Audio()
+  nativeAudioFile: any
 
 
   // camera
@@ -42,6 +49,10 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   public captureImg: any
 
   imageFile: File
+
+  // Gallery
+  nativeImageFile: any
+
   //
   public isWebCam: boolean = false
 
@@ -63,20 +74,37 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private domSanitizer: DomSanitizer,
     private audioRecordingService: AudioRecorderService,
     private cameraService: CameraService,
-    private platform: Platform,
+    private platformService: PlatformService,
     private modalCtrl: ModalController,
     private networkService: NetworkService,
     private localStorageService: LocalStorageService,
-    private toastCtrl: ToastController,
+
+    // native
+    private nativeNetworkService: NativeNetworkService,
+    private preferencesService: PreferencesService,
+    private nativeCameraService: NativeCameraService,
+    // ui
+    private toastUIService: ToastUIService,
   ) { }
 
   ngOnInit() {
     this.initForm()
 
-    this.networkService.getNetworkState().subscribe(state => {
-      this.isConnected = state
-      console.log('web network connection:', state)
-    })
+    if (this.platformService.isWeb()) {
+      this.networkService.getNetworkState().subscribe(state => {
+        this.isConnected = state
+        console.log('web network connection:', state)
+        // display toast-ui for web network-connection
+        this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
+      })
+    } else if (this.platformService.isMobile()) {
+      this.nativeNetworkService.getNetworkState().subscribe(state => {
+        this.isConnected = state
+        console.log('native network connection:', state)
+        // display toast-ui for native network-connection
+        this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
+      })
+    }
 
   }
 
@@ -112,34 +140,84 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   public async onSubmit() {
     this.isSubmitted = true
     console.log(`audio `, this.audioBlob, this.audioFile, this.audioUrl, this.audio)
-    const audio_data = JSON.stringify(this.audioBlob)
-    const imageUrl = this.image_url
-    this.infoForm.patchValue({ 'image': imageUrl })
-    this.infoForm.patchValue({ 'audio': this.audioUrl })
+
+
+
+
+
+    if (this.platformService.isWeb()) {
+      let audio_data = JSON.stringify(this.audioBlob)
+      this.infoForm.patchValue({ 'image': this.image_url })
+      this.infoForm.patchValue({ 'audio': this.audioUrl })
+
+    } else if (this.platformService.isMobile()) {
+      this.nativeImageFile = await this.nativeCameraService.uploadImage()
+      this.infoForm.patchValue({ 'image': this.image_url })
+      this.infoForm.patchValue({ 'audio': this.audioUrl })
+    }
+
+
     if (this.infoForm.valid) {
+      const formdata = new FormData()
+      //
       this.isValid = true
-      console.log('Submitted Form:', this.infoForm.value)
+      console.log('Submitted Form:', this.infoForm.value, this.infoForm.value['info'])
       //localStorage.setItem('DATA', JSON.stringify(this.infoForm.value))
       // check platform
       // check internet-connection
       // else save into local-storage / native-storage
-      if (this.platform.is('hybrid') || this.platform.is('mobileweb')) {
-        const p = await this.platform.ready()
-        console.log('platform:', p)
+
+      //formdata.append('info', this.infoForm.value('info'))
+
+
+      if (this.platformService.isWeb()) {
+
         // check internet-connection
         this.networkService.getNetworkState().subscribe(state => {
           this.isConnected = state
           console.log('web network connection:', state)
           if (!state) {
+            // display toast-UI: web network offline
+            this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
+
+
+            /*
+             formdata.append('image', this.image_url)
+             formdata.append('audio', this.audioUrl)
+             */
+
+
             // save into local-storage : local-storage-service
             this.localStorageService.setItem('DATA', this.infoForm.value)
+
           } else {
-            // send to server: native-storage-service
+            // send to server
+            // // send to server: native-storage-service
           }
         })
-      } else if (this.platform.is('mobile')) {
+      } else if (this.platformService.isMobile()) {
         // check native-network
         // if state is false then save into native-storage else send to server
+
+        this.nativeNetworkService.getNetworkState().subscribe(state => {
+          this.isConnected = state
+          if (!state) {
+            console.log('native network connection:', state)
+
+            // display toast-UI: native network offline
+            this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
+
+
+            //formdata.append('image', this.nativeImageFile)
+
+            // save into native-storage/Preferences : native-storage-service /preferencesService
+            this.preferencesService.setItem('DATA', this.infoForm.value)
+
+
+          } else {
+            // send to server
+          }
+        })
 
       }
 
@@ -164,15 +242,28 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           handler: () => {
             // if platform != 'mobile' then display the camera-components else if it == 'mobile' open the native camera on mobile
-            this.presentModal(CameraComponent)
+            if (this.platformService.isWeb()) {
+              this.presentModal(CameraComponent)
+            } else if (this.platformService.isMobile()) {
+              // open the native-camera on mobile
+              this.image_url = this.nativeCameraService.takePhoto()
+            }
+
           }
         },
         {
           text: 'Gallery',
-          handler: () => {
-            // this.files.click()
-            uploader.click()
-            console.log('gallery:', this.files, uploader)
+          handler: async () => {
+            // if platform is hybrid or mobile-web then :
+            if (this.platformService.isWeb()) {
+              uploader.click()
+              console.log('gallery:', this.files, uploader)
+            } else if (this.platformService.isMobile()) {
+              // open gallery or file-manager on mobile
+              this.image_url = this.nativeCameraService.selectImage()
+              //this.nativeImageFile = await this.nativeCameraService.uploadImage() //.then((vl: any) => vl)
+
+            }
           },
           data: {
             action: 'Gallery'
@@ -200,7 +291,8 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!file.type.match(/image-*/)) {
       //alert('Upload just image file, please!')
       // display toast top
-      this.presentToast('Upload just image file,please!')
+      //this.presentToast('Upload just image file,please!')
+      this.toastUIService.presentToast('Upload just image file,please!')
       return
     }
 
@@ -259,15 +351,11 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   async startRecording() {
     this.isRecording = true
     this.audioRecordingService.startRecording()
-
-
-
   }
 
   async stopRecording() {
     this.isRecording = false
     this.audioRecordingService.stopRecording()
-
   }
 
   playRecording() {
@@ -287,13 +375,23 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   */
 
   openAudioRecording() {
-    this.presentModal(AudioRecordingComponent)
+    // props: isNative: true || false
+    //is true then run native-recording else run web-recording
+    // if platform is mobile then isNative=true else isNative=false
+
+    if (this.platformService.isWeb()) {
+      this.presentModal(AudioRecordingComponent, { isNative: false })
+    } else if (this.platformService.isMobile()) {
+      // native
+      this.presentModal(AudioRecordingComponent, { isNative: true })
+    }
+
   }
 
-  async presentModal(component: any) {
+  async presentModal(component: any, props?: any) {
     const modal = await this.modalCtrl.create({
       component,
-      componentProps: {},
+      componentProps: props,
     })
 
     this.getDataFromModalUI(modal)
@@ -314,14 +412,15 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!data.audio || !data.audioUrl || data.audioBlob) {
           // display toast top
           //alert('Could you record,please!')
-          this.presentToast('Could you record,please!')
+          //this.presentToast('Could you record,please!')
+          this.toastUIService.presentToast('Could you record,please!')
+          return
         }
         this.audioUrl = data.audioUrl
         this.audio = data.audio
         this.audioFile = data.audio
         this.audioBlob = data.audioBlob
         this.infoForm.patchValue({ 'audio': data.audioBlob })
-
       }
     }
   }
@@ -338,18 +437,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // toast-ui
 
-  async presentToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      position: 'top',
-      positionAnchor: 'header',
-      duration: 3000,
-    })
-
-    await toast.present()
-  }
 
 
 
