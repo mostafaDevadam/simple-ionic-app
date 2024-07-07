@@ -19,13 +19,10 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
   private analyser: AnalyserNode;
   private dataArray: Uint8Array;
   private bufferLength: number;
-  private source: MediaElementAudioSourceNode;
+  private source: MediaElementAudioSourceNode
   private animationId: number;
   //
   public isPlaying: boolean = false
-
-
-  //
 
   //
   public isRecording: boolean = false
@@ -36,6 +33,7 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
   isNative: boolean = false
 
   nativeAudioFile: string = ''
+
 
 
   constructor(
@@ -57,16 +55,23 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+    // visualizer for audio recording
+    this.audioRecordingService.destroy()
+
+    //visualizer for play audio
+    this.destroyVisualizer()
+
+
+  }
+
+  // Visualizer for play audio
+  destroyVisualizer() {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
     if (this.audioContext) {
       this.audioContext.close();
     }
-
-
-
-
   }
 
   private setupAudioContext(audioElement: HTMLAudioElement) {
@@ -80,15 +85,15 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
     this.bufferLength = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.bufferLength);
 
-    this.draw();
+    this.draw(this.canvas.nativeElement)
 
     this.isPlaying = true
   }
 
-  private draw() {
-    const canvasCtx = this.canvas.nativeElement.getContext('2d');
-    const WIDTH = this.canvas.nativeElement.width;
-    const HEIGHT = this.canvas.nativeElement.height;
+  private draw(canvas: HTMLCanvasElement) {
+    const canvasCtx = canvas.getContext('2d');
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
 
     if (canvasCtx) {
 
@@ -107,7 +112,7 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this.bufferLength; i++) {
           barHeight = this.dataArray[i];
           canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
-         // canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+          // canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
           canvasCtx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight)
           x += barWidth + 1;
         }
@@ -118,6 +123,7 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
 
   }
 
+  //
   playPause$() {
     const audio = this.audioElement.nativeElement;
     if (audio.paused) {
@@ -126,6 +132,8 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
       audio.pause();
     }
   }
+
+  //
 
   close() {
     this.modalCtrl.dismiss({ audio: this.audio, audioUrl: this.audioUrl, audioBlob: this.audioBlob }, 'audio')
@@ -137,6 +145,8 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
     this.isRecording = true
     if (!this.isNative) {
       this.audioRecordingService.startRecording()
+      // visualizer for recording
+      this.audioRecordingService.setupAudioContext(this.canvas.nativeElement)
     } else {
       //this.startNativeRecording()
     }
@@ -164,11 +174,8 @@ export class AudioRecordingComponent implements OnInit, OnDestroy {
       this.audio = new Audio(this.audioUrl)
       console.log(`Audio: ${this.audio} , ${this.audioBlob} , ${this.audioUrl}`)
       this.audio.play()
+      // visualizer for play
       this.setupAudioContext(this.audio)
-
-
-    } else {
-
     }
 
   }
