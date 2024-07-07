@@ -36,16 +36,16 @@
 
 ## services
 <ul>
-<ol>Platform</ol>
-<ol>Network</ol>
-<ol>NativeNetwork</ol>
-<ol>Camera</ol>
-<ol>NativeCamera</ol>
-<ol>AudioRecorder</ol>
-<ol>NativeAudioRecorder</ol>
-<ol>LocalStorage</ol>
-<ol>Preferences(alternative NativeStorage)</ol>
-<ol>ToastUI: display dynamic toast message in some of components like in network, form and for validation</ol>
+<ol>1.Platform</ol>
+<ol>2.Network</ol>
+<ol>3.NativeNetwork</ol>
+<ol>4.Camera</ol>
+<ol>5.NativeCamera</ol>
+<ol>6.AudioRecorder</ol>
+<ol>7.NativeAudioRecorder</ol>
+<ol>8.LocalStorage</ol>
+<ol>9.Preferences(alternative NativeStorage)</ol>
+<ol>10.ToastUI: display dynamic toast message in some of components like in network, form and for validation</ol>
 </ul>
 
 ## Install
