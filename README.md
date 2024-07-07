@@ -3,6 +3,8 @@
   <a href="https://www.npmjs.com/package/simple ionic app" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/simple ionic app.svg">
   </a>
+
+
 </p>
 
 > simple ionic app has small form and it supports offline.
@@ -12,10 +14,12 @@
 ### 🏠 [Homepage](https://ionicframework.com/)
 
 ## Features
-1.take photo from camera
+<ul>
+<ol>1.take photo from camera</ol>
 2.upload photo from device
 3.record voice
 4.It works offline and online
+<ul>
 
 ## Structure
 
