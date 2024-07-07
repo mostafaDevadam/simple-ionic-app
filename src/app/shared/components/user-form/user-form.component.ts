@@ -133,7 +133,6 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-
   public get infoFormControls() {
     return this.infoForm.controls
   }
@@ -141,10 +140,6 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
   public async onSubmit() {
     this.isSubmitted = true
     console.log(`audio `, this.audioBlob, this.audioFile, this.audioUrl, this.audio)
-
-
-
-
 
     if (this.platformService.isWeb()) {
       let audio_data = JSON.stringify(this.audioBlob)
@@ -167,10 +162,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // check platform
       // check internet-connection
       // else save into local-storage / native-storage
-
       //formdata.append('info', this.infoForm.value('info'))
-
-
       if (this.platformService.isWeb()) {
 
         // check internet-connection
@@ -180,17 +172,12 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
           if (!state) {
             // display toast-UI: web network offline
             this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
-
-
             /*
              formdata.append('image', this.image_url)
              formdata.append('audio', this.audioUrl)
              */
-
-
             // save into local-storage : local-storage-service
             this.localStorageService.setItem('DATA', this.infoForm.value)
-
           } else {
             // send to server
             // // send to server: native-storage-service
@@ -199,22 +186,15 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
       } else if (this.platformService.isMobile()) {
         // check native-network
         // if state is false then save into native-storage else send to server
-
         this.nativeNetworkService.getNetworkState().subscribe(state => {
           this.isConnected = state
           if (!state) {
             console.log('native network connection:', state)
-
             // display toast-UI: native network offline
             this.toastUIService.presentToast(` Network connection is ${state ? 'online' : 'offline'}`)
-
-
             //formdata.append('image', this.nativeImageFile)
-
             // save into native-storage/Preferences : native-storage-service /preferencesService
             this.preferencesService.setItem('DATA', this.infoForm.value)
-
-
           } else {
             // send to server
           }
@@ -234,7 +214,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async presentActionSheet(uploader: any) {
     const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Actions',
+     // header: '',
       buttons: [
         {
           text: 'Camera',
