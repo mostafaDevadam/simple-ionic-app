@@ -13,6 +13,14 @@
 
 ### 🏠 [Homepage](https://ionicframework.com/)
 
+## Tech
+<ul>
+<li>Ionic Framework(Angular)</li>
+<li>Capacitor</li>
+<li>Cordova Plugins</li>
+<li>Capacitor Plugins</li>
+</ul>
+
 ## Features
 <ul>
 <ol>1.take photo from camera</ol>
