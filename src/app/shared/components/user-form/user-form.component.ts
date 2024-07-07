@@ -125,6 +125,7 @@ export class UserFormComponent implements OnInit, AfterViewInit, OnDestroy {
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(150),
+        Validators.pattern('[a-zA-Z ]*'),
       ])),
       audio: new FormControl('', Validators.compose([
         //Validators.required,
