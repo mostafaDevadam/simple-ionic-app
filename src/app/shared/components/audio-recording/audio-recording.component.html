@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons>
-      <ion-button (click)="close()">back</ion-button> 
+      <ion-button (click)="close()">back</ion-button>
     </ion-buttons>
     <ion-title>Audio Recording</ion-title>
   </ion-toolbar>
@@ -9,13 +9,19 @@
 
 <ion-content class="ion-padding">
 
+
+  <div>
+    <canvas #canvas width="350" height="200"></canvas>
+  </div>
+
+
   <ion-grid>
+    <ion-row>
+    </ion-row>
     <ion-row>
       <ion-img src="../../../../assets/mic.webp" alt="mic"></ion-img>
     </ion-row>
   </ion-grid>
-
-
 
 
 
