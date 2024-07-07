@@ -9,6 +9,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NetworkService } from './shared/services/network.service';
 import { LocalStorageService } from './shared/services/local-storage.service';
+import { NativeNetworkService } from './shared/services/native-network.service';
+import { NativeStorageService } from './shared/services/native-storage.service';
+import { PreferencesService } from './shared/services/preferences.service';
+import { PlatformService } from './shared/services/platform.service';
+import { ToastUIService } from './shared/services/toast-ui.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +27,13 @@ import { LocalStorageService } from './shared/services/local-storage.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NetworkService,
     LocalStorageService,
-    
+    NativeNetworkService,
+    NativeStorageService,
+    PreferencesService,
+    PlatformService,
+    // ui
+    ToastUIService,
+
 
   ],
   bootstrap: [AppComponent],
