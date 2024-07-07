@@ -25,7 +25,7 @@
 
 
 ## main component
-UserFormComponent:
+> UserFormComponent:
 > Using UserFormComponent in Home Page because it's reusable component.
 > It has the form and fields and validations and created reusable components for camera and voice recording.
 
@@ -38,17 +38,18 @@ UserFormComponent:
 </ul>
 
 ## services
-Platform
-Network
-NativeNetwork
-Camera
-NativeCamera
-AudioRecorder
-NativeAudioRecorder
-LocalStorage
-Preferences(alternative NativeStorage)
-ToastUI: display dynamic toast message in some of components like in network, form and for validation
-
+<ul>
+<ol>Platform</ol>
+<ol>Network</ol>
+<ol>NativeNetwork</ol>
+<ol>Camera</ol>
+<ol>NativeCamera</ol>
+<ol>AudioRecorder</ol>
+<ol>NativeAudioRecorder</ol>
+<ol>LocalStorage</ol>
+<ol>Preferences(alternative NativeStorage)</ol>
+<ol>ToastUI: display dynamic toast message in some of components like in network, form and for validation</ol>
+</ul>
 ## Install
 
 Install Node.js version  20.11.1
