@@ -5,9 +5,43 @@
   </a>
 </p>
 
-> simple ionic app has small form and it supports offline
+> simple ionic app has small form and it supports offline.
+> The app check if the platform is mobile or not and after that check the network connection state in background
+> User can enter his data in form and save it in local storage if the network connection is offline and if the network connection is online, then get the data from local-storage in device and send it to the server.
 
 ### 🏠 [Homepage](https://ionicframework.com/)
+
+## Features
+1.take photo from camera
+2.upload photo from device
+3.record voice
+4.It works offline and online
+
+## Structure
+
+
+## main component
+UserFormComponent:
+Using UserFormComponent in Home Page because it's reusable component.
+It has the form and fields and validations and created reusable components for camera and voice recording.
+
+
+
+## reusable components
+1.AudioRecoding
+2.Camera
+
+## services
+Platform
+Network
+NativeNetwork
+Camera
+NativeCamera
+AudioRecorder
+NativeAudioRecorder
+LocalStorage
+Preferences(alternative NativeStorage)
+ToastUI: display dynamic toast message in some of components like in network, form and for validation
 
 ## Install
 
