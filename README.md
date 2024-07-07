@@ -23,13 +23,10 @@
 
 ## Structure
 
-
 ## main component
 > UserFormComponent:
 > Using UserFormComponent in Home Page because it's reusable component.
 > It has the form and fields and validations and created reusable components for camera and voice recording.
-
-
 
 ## reusable components
 <ul>
