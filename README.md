@@ -25,8 +25,8 @@
 
 ## main component
 > UserFormComponent:
-<ol> Using UserFormComponent in Home Page because it's reusable component. </ol>
-<ol> It has the form and fields and validations and created reusable components for camera and voice recording.</ol>
+<li> Using UserFormComponent in Home Page because it's reusable component. </li>
+<li> It has the form and fields and validations and created reusable components for camera and voice recording.</li>
 
 ## reusable components
 <ul>
