@@ -11,6 +11,20 @@
 
 ## Install
 
+Install Node.js version  20.11.1
+
+Install Angular version 18
+```sh
+npm i @angular/cli
+```
+
+
+install ionic version 8
+```sh
+npm i @ionic/cli
+```
+
+
 ```sh
 npm install
 ```
@@ -18,7 +32,7 @@ npm install
 ## Usage
 
 ```sh
-npm run start
+ionic serve
 ```
 
 ## Run tests
